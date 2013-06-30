@@ -2,4 +2,5 @@
 #= require ./parser
 
 jQuery ($) ->
+  alert("hi")
   Observer.init()
