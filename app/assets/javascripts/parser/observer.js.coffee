@@ -7,7 +7,6 @@ class window.Observer
       $(".source").focus()
 
       parser = new Parser(raw)
-      Observer.update(parser.json())
       Observer.submit(parser)
 
   @update: (message) ->
