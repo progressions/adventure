@@ -1,16 +1,51 @@
 class GameController < ApplicationController
+  def current_room
+    room_id = session[:current_room] ||= Room.first.try(:id)
+    Room.find(room_id)
+  end
+
+  def set_current_room(room)
+    session[:current_room] = room.try(:id)
+  end
+
   def index
   end
 
+  def show
+    output = {
+      description: current_room.description,
+      name: current_room.name,
+      exits: current_room.exit_list
+    }
+
+    render :json => output
+  end
+
   def command
-    Rails.logger.info("params: #{params.inspect}")
+    output = {}
+
     command = JSON.parse(params[:command])
 
-    Rails.logger.info("command: #{command.inspect}")
-
     verb = command["verb"]
-    Rails.logger.info("verb: #{verb}")
 
-    render :json => {message: "OK you have done that."}
+    if command["verb"] == "go"
+      dir = command["direct_object"]["noun"]
+      destination = current_room.go(dir)
+      if destination.present?
+        set_current_room(destination)
+
+        output = {
+          description: current_room.description,
+          name: current_room.name,
+          exits: current_room.exit_list
+        }
+      else
+        output = {
+          message: "You cannot go that way"
+        }
+      end
+    end
+
+    render :json => output
   end
 end

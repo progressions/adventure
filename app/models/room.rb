@@ -4,7 +4,7 @@ class Room < ActiveRecord::Base
   def go(direction)
     direction = String(direction).downcase.strip
 
-    exits.where(:direction => direction).first
+    exits.where(:direction => direction).try(:first).try(:destination)
   end
 
   def exit_list
