@@ -11,6 +11,6 @@ class GameController < ApplicationController
     verb = command["verb"]
     Rails.logger.info("verb: #{verb}")
 
-    render :json => {thing: "Hello"}
+    render :json => {message: "OK you have done that."}
   end
 end

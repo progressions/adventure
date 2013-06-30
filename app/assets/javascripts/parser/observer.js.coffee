@@ -7,16 +7,19 @@ class window.Observer
       $(".source").focus()
 
       parser = new Parser(raw)
-      line = $("<p>").html(parser.json())
-      $(".output").append(line)
-
+      Observer.update(parser.json())
       Observer.submit(parser)
 
+  @update: (message) ->
+    line = $("<p>").html(message)
+    $(".output").append(line)
 
   @submit: (parser) ->
     $.ajax
       type: "POST"
       url: "/game/command"
-      data: 
+      data:
         "command": parser.json()
+      success: (data) ->
+        Observer.update(data["message"])
 
