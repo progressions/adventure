@@ -1,6 +1,8 @@
 Adventure::Application.routes.draw do
   get "game" => 'game#index'
 
+  post "game/command" => 'game#command'
+
   mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
 
   # The priority is based upon order of creation: first created -> highest priority.

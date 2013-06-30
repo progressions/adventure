@@ -10,4 +10,13 @@ class window.Observer
       line = $("<p>").html(parser.json())
       $(".output").append(line)
 
+      Observer.submit(parser)
+
+
+  @submit: (parser) ->
+    $.ajax
+      type: "POST"
+      url: "/game/command"
+      data: 
+        "command": parser.json()
 
