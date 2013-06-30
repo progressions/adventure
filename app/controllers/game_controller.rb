@@ -11,6 +11,11 @@ class GameController < ApplicationController
   def index
   end
 
+  def start
+    session[:current_room] = Room.first.try(:id)
+    redirect_to game_url
+  end
+
   def show
     output = {
       description: current_room.description,
@@ -25,6 +30,7 @@ class GameController < ApplicationController
     output = {}
 
     command = JSON.parse(params[:command])
+    command = replace_aliases(command)
 
     verb = command["verb"]
 
@@ -44,8 +50,40 @@ class GameController < ApplicationController
           message: "You cannot go that way"
         }
       end
+    elsif command["verb"] == "look"
+      show and return
     end
 
     render :json => output
+  end
+
+  def replace_aliases(command)
+    verb = String(command["verb"]).downcase.strip
+
+    case verb
+    when "n", "north"
+      command["verb"] = "go"
+      command["direct_object"] = {
+        "noun" => "north"
+      }
+    when "s", "south"
+      command["verb"] = "go"
+      command["direct_object"] = {
+        "noun" => "south"
+      }
+    when "e", "east"
+      command["verb"] = "go"
+      command["direct_object"] = {
+        "noun" => "east"
+      }
+    when "w", "west"
+      command["verb"] = "go"
+      command["direct_object"] = {
+        "noun" => "west"
+      }
+    when "l"
+      command["verb"] = "look"
+    end
+    command
   end
 end

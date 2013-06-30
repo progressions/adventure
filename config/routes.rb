@@ -1,6 +1,7 @@
 Adventure::Application.routes.draw do
   get "game" => 'game#index'
   get "game/show" => 'game#show'
+  get "game/start" => 'game#start'
 
   post "game/command" => 'game#command'
 

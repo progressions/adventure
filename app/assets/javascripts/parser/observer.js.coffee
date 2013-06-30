@@ -27,9 +27,9 @@ class window.Observer
 
       output.append(message)
     else
-      room_name = $("<p>").html(data["name"])
+      room_name = $("<h3>").html(data["name"])
       room_description = $("<p>").html(data["description"])
-      room_exits = $("<p>").html("Exits: " + Array(data["exits"]).join(", "))
+      room_exits = $("<p>").html("Exits: " + data["exits"].join(",  "))
       console.log(data["exits"])
 
       output.append(room_name)
