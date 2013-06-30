@@ -34,7 +34,8 @@ class GameController < ApplicationController
 
     verb = command["verb"]
 
-    if command["verb"] == "go"
+    case command["verb"]
+    when "go"
       dir = command["direct_object"]["noun"]
       destination = current_room.go(dir)
       if destination.present?
@@ -50,7 +51,7 @@ class GameController < ApplicationController
           message: "You cannot go that way"
         }
       end
-    elsif command["verb"] == "look"
+    when "look"
       show and return
     end
 
@@ -80,6 +81,26 @@ class GameController < ApplicationController
       command["verb"] = "go"
       command["direct_object"] = {
         "noun" => "west"
+      }
+    when "nw", "northwest"
+      command["verb"] = "go"
+      command["direct_object"] = {
+        "noun" => "northwest"
+      }
+    when "sw", "southwest"
+      command["verb"] = "go"
+      command["direct_object"] = {
+        "noun" => "southwest"
+      }
+    when "ne", "northeast"
+      command["verb"] = "go"
+      command["direct_object"] = {
+        "noun" => "northeast"
+      }
+    when "se", "southeast"
+      command["verb"] = "go"
+      command["direct_object"] = {
+        "noun" => "southeast"
       }
     when "l"
       command["verb"] = "look"
