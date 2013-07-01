@@ -11,11 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130629214929) do
+ActiveRecord::Schema.define(version: 20130630232556) do
+
+  create_table "exits", force: true do |t|
+    t.string   "direction"
+    t.integer  "room_id"
+    t.integer  "destination_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "rooms", force: true do |t|
     t.string   "name"
     t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "static_objects", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "initial_room_id"
+    t.integer  "room_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
