@@ -13,14 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20130630232556) do
 
-  create_table "create_exists", force: true do |t|
-    t.string   "direction"
-    t.integer  "from_id"
-    t.integer  "destination_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "exits", force: true do |t|
     t.string   "direction"
     t.integer  "room_id"
