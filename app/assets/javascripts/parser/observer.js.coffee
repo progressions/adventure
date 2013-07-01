@@ -31,8 +31,10 @@ class window.Observer
     else
       room_name = $("<h3>").html(data["name"])
       room_description = $("<p>").html(data["description"])
-      room_exits = $("<p>").html("Exits: " + data["exits"].join(",  "))
-      room_objects = $("<p>").html("Objects: " + data["objects"].join(",  "))
+      if data["exits"].length > 0
+        room_exits = $("<p>").html("Exits: " + data["exits"].join(",  "))
+      if data["objects"].length > 0
+        room_objects = $("<p>").html("Objects: " + data["objects"].join(",  "))
       console.log(data["exits"])
 
       output.append(room_name)

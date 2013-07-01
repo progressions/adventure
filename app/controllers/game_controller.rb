@@ -42,6 +42,23 @@ class GameController < ApplicationController
           message: "You cannot go that way"
         }
       end
+    when "drop"
+      if command["direct_object"]
+        noun = command["direct_object"]["noun"]
+        static_object = Player.inventory.where(name: noun).first
+
+        if static_object.present?
+          static_object.update_attribute(:room_id, current_room.id)
+
+          output = {
+            message: "You drop #{static_object.name}."
+          }
+        else
+          output = {
+            message: "You don't see that."
+          }
+        end
+      end
     when "get"
       if command["direct_object"]
         noun = command["direct_object"]["noun"]
