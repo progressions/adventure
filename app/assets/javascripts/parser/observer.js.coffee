@@ -19,7 +19,9 @@ class window.Observer
         Observer.update(data)
 
   @update: (data) ->
-    output = $("<div>")
+    $(".latest").removeClass("latest")
+
+    output = $("<div>").addClass("latest")
 
     console.log(data)
     if data["message"]
@@ -30,11 +32,13 @@ class window.Observer
       room_name = $("<h3>").html(data["name"])
       room_description = $("<p>").html(data["description"])
       room_exits = $("<p>").html("Exits: " + data["exits"].join(",  "))
+      room_objects = $("<p>").html("Objects: " + data["objects"].join(",  "))
       console.log(data["exits"])
 
       output.append(room_name)
       output.append(room_description)
       output.append(room_exits)
+      output.append(room_objects)
 
     $(".output").prepend(output)
 

@@ -13,17 +13,12 @@ class GameController < ApplicationController
 
   def start
     session[:current_room] = Room.first.try(:id)
+    StaticObject.reset
     redirect_to game_url
   end
 
   def show
-    output = {
-      description: current_room.description,
-      name: current_room.name,
-      exits: current_room.exit_list
-    }
-
-    render :json => output
+    render :json => current_room.output
   end
 
   def command
@@ -41,18 +36,50 @@ class GameController < ApplicationController
       if destination.present?
         set_current_room(destination)
 
-        output = {
-          description: current_room.description,
-          name: current_room.name,
-          exits: current_room.exit_list
-        }
+        output = current_room.output
       else
         output = {
           message: "You cannot go that way"
         }
       end
+    when "get"
+      if command["direct_object"]
+        noun = command["direct_object"]["noun"]
+        static_object = current_room.static_objects.where(name: noun).first
+
+        if static_object.present?
+          static_object.update_attribute(:room_id, 0)
+
+          output = {
+            message: "You take #{static_object.name}."
+          }
+        else
+          output = {
+            message: "You don't see that."
+          }
+        end
+      end
+    when "inventory"
+      output = {
+        message: "You are carrying the following items: #{Player.inventory_list.join(', ')}."
+      }
     when "look"
-      show and return
+      if command["direct_object"]
+        noun = command["direct_object"]["noun"]
+        static_object = current_room.static_objects.where(name: noun).first || Player.inventory.where(name: noun).first
+
+        if static_object.present?
+          output = {
+            message: static_object.description
+          }
+        else
+          output = {
+            message: "You don't see that."
+          }
+        end
+      else
+        show and return
+      end
     end
 
     render :json => output
@@ -102,6 +129,8 @@ class GameController < ApplicationController
       command["direct_object"] = {
         "noun" => "southeast"
       }
+    when "i", "inv"
+      command["verb"] = "inventory"
     when "l"
       command["verb"] = "look"
     end
