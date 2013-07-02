@@ -16,7 +16,7 @@ class SavedGamesController < ApplicationController
     if @saved_game.save
       flash[:notice] = "Your game was saved."
       session[:current_game] = @saved_game.id
-      redirect_to saved_games_url
+      redirect_to game_start_url(@saved_game)
     else
       flash[:error] = "Your game could not be saved."
       render :new

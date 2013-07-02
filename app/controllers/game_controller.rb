@@ -22,6 +22,9 @@ class GameController < ApplicationController
   end
 
   def play
+    if current_game.started?
+      set_current_room(current_game.current_room)
+    end
   end
 
   def start
