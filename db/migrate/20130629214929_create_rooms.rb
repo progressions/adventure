@@ -3,6 +3,7 @@ class CreateRooms < ActiveRecord::Migration
     create_table :rooms do |t|
       t.string :name
       t.text :description
+      t.integer :saved_game_id
 
       t.timestamps
     end

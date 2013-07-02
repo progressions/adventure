@@ -4,6 +4,7 @@ class CreateExits < ActiveRecord::Migration
       t.string :direction
       t.integer :room_id
       t.integer :destination_id
+      t.integer :saved_game_id
 
       t.timestamps
     end
