@@ -12,7 +12,7 @@ class SavedGamesController < ApplicationController
   end
 
   def create
-    @saved_game = SavedGame.new(saved_game_params[:saved_game])
+    @saved_game = SavedGame.new(saved_game_params)
     if @saved_game.save
       flash[:notice] = "Your game was saved."
     else
@@ -26,6 +26,6 @@ class SavedGamesController < ApplicationController
   private
 
   def saved_game_params
-    params.permit(:name)
+    params.require(:saved_game).permit(:name)
   end
 end

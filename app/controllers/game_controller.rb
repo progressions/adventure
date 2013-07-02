@@ -31,7 +31,13 @@ class GameController < ApplicationController
   end
 
   def look
-    render :json => current_room.output
+    if current_room.present?
+      render :json => current_room.output
+    else
+      render :json => {
+        message: "Nothing to see here."
+      }
+    end
   end
 
   def command

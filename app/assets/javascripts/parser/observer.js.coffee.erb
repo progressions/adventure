@@ -1,6 +1,6 @@
 class window.Observer
   @init: ->
-    Observer.show()
+    # Observer.show()
 
     $(".source").focus()
     $(".source").change ->
@@ -14,7 +14,7 @@ class window.Observer
   @show: ->
     $.ajax
       type: "GET"
-      url: "/game/show"
+      url: "/game/look"
       success: (data) ->
         Observer.update(data)
 
