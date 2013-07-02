@@ -11,7 +11,11 @@ class SavedGame < ActiveRecord::Base
   def start
     Rails.logger.info("START A NEW GAME")
 
+    started = true
     room = rooms.create(name: "Room", description: "It's a room.")
+    kitchen = rooms.create(name: "Kitchen", description: "It's a kitchen.")
+    room.exits.create(direction: "north", destination: kitchen)
+    kitchen.exits.create(direction: "south", destination: room)
     current_room = room
 
     save

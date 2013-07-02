@@ -115,6 +115,8 @@
         .navbar-inner
           .container
             = link_to("Adventure", saved_games_url, class: "brand")
+            %ul.nav.nav-pills
+              %li= link_to("Saved Games", saved_games_url)
 
       .container
         - [:notice, :error, :alert].each do |level|

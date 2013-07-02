@@ -14,7 +14,7 @@ class GameController < ApplicationController
 
   def current_room
     room_id = session[:current_room] ||= current_game.rooms.first.try(:id)
-    current_game.rooms.where(id: room_id)
+    current_game.rooms.where(id: room_id).try(:first)
   end
 
   def set_current_room(room)

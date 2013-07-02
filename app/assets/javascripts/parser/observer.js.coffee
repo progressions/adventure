@@ -1,6 +1,6 @@
 class window.Observer
   @init: ->
-    # Observer.show()
+    Observer.show()
 
     $(".source").focus()
     $(".source").change ->
