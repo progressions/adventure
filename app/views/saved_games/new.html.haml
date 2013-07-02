@@ -3,6 +3,8 @@
     %h1 Saved Games
 
     .form-horizontal
+      = errors_for(@saved_game).html_safe
+
       = form_for(@saved_game) do |f|
         .control-group
           = f.label :name, class: "control-label"
@@ -11,5 +13,4 @@
 
         .form-actions
           = f.submit(class: "btn btn-success")
-
 
