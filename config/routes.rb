@@ -1,6 +1,11 @@
 Adventure::Application.routes.draw do
-  get "game" => 'game#index'
-  get "game/show" => 'game#show'
+  get "saved_game/edit"
+  get "saved_game/index"
+  get "saved_game/new"
+  resources :game
+
+  get "game/play" => 'game#play'
+  get "game/look" => 'game#look'
   get "game/start" => 'game#start'
 
   post "game/command" => 'game#command'
