@@ -1,4 +1,5 @@
 class Room < ActiveRecord::Base
+  belongs_to :saved_game
   has_many :exits
   has_many :static_objects
 
