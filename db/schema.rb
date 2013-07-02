@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130702170456) do
+ActiveRecord::Schema.define(version: 20130702195320) do
 
   create_table "exits", force: true do |t|
     t.string   "direction"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 20130702170456) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "started"
+    t.integer  "current_room_id"
   end
 
   create_table "static_objects", force: true do |t|

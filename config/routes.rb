@@ -3,7 +3,7 @@ Adventure::Application.routes.draw do
 
   get "game/play" => 'game#play'
   get "game/look" => 'game#look'
-  get "game/start" => 'game#start'
+  get "game/start/:id" => 'game#start', as: :game_start
 
   post "game/command" => 'game#command'
 

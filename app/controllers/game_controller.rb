@@ -1,5 +1,5 @@
 class GameController < ApplicationController
-  before_filter :require_current_game
+  before_filter :require_current_game, except: :start
 
   def require_current_game
     unless current_game.present?
@@ -25,9 +25,14 @@ class GameController < ApplicationController
   end
 
   def start
-    session[:current_room] = Room.first.try(:id)
-    StaticObject.reset
-    redirect_to game_url
+    @saved_game = SavedGame.find(params[:id])
+    unless @saved_game.started?
+      @saved_game.start
+    end
+    session[:current_game] = @saved_game.id
+    set_current_room(@saved_game.current_room)
+
+    redirect_to game_play_url
   end
 
   def look

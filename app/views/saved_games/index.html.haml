@@ -6,7 +6,7 @@
       %table.table
         - @saved_games.each do |saved_game|
           %tr
-            %td= saved_game.name
+            %td= link_to(saved_game.name, game_start_url(saved_game))
             %td= saved_game.created_at
     - else
       %p
