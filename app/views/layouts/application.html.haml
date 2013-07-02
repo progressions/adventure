@@ -111,7 +111,18 @@
       -# Content
       -# ==========================================================================
 
+      .navbar.navbar-fixed-top
+        .navbar-inner
+          .container
+            = link_to("Adventure", saved_games_url, class: "brand")
+
       .container
+        - [:notice, :error, :alert].each do |level|
+          - unless flash[level].blank?
+            .alert{class: flash_class(level)}
+              %a.close{href: "#"} x
+              %p= flash[level]
+
         = yield
 
       -# JS
