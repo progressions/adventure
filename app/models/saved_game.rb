@@ -1,23 +1,23 @@
 class SavedGame < ActiveRecord::Base
-  has_many :rooms
-  has_many :exits
-  has_many :static_objects
+  has_many :rooms, dependent: :destroy
+  has_many :exits, dependent: :destroy
+  has_many :static_objects, dependent: :destroy
 
   belongs_to :current_room, class_name: Room, foreign_key: :current_room_id
 
-  validates :name, presence: true
-  validates :name, uniqueness: true
+  def inventory
+    static_objects.where(room_id: 0)
+  end
+
+  def inventory_list
+    inventory.map(&:name)
+  end
 
   def start
-    Rails.logger.info("START A NEW GAME")
+    creator = GameCreator.new(self)
+    creator.start
 
-    started = true
-    room = rooms.create(name: "Room", description: "It's a room.")
-    kitchen = rooms.create(name: "Kitchen", description: "It's a kitchen.")
-    room.exits.create(direction: "north", destination: kitchen)
-    kitchen.exits.create(direction: "south", destination: room)
-    current_room = room
-
-    save
+    self.started = true
+    save!
   end
 end

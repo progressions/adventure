@@ -8,8 +8,11 @@ class GameController < ApplicationController
   end
 
   def current_game
-    game_id = session[:current_game]
-    SavedGame.where(id: game_id).try(:first)
+    unless @current_game
+      game_id = session[:current_game]
+      @current_game = SavedGame.where(id: game_id).try(:first)
+    end
+    @current_game
   end
 
   def current_room
@@ -19,6 +22,8 @@ class GameController < ApplicationController
 
   def set_current_room(room)
     session[:current_room] = room.try(:id)
+    current_game.current_room = room
+    current_game.save
   end
 
   def play
@@ -72,7 +77,7 @@ class GameController < ApplicationController
     when "drop"
       if command["direct_object"]
         noun = command["direct_object"]["noun"]
-        static_object = Player.inventory.where(name: noun).first
+        static_object = current_game.inventory.where(name: noun).first
 
         if static_object.present?
           static_object.update_attribute(:room_id, current_room.id)
@@ -105,7 +110,7 @@ class GameController < ApplicationController
       end
     when "inventory"
       output = {
-        message: "You are carrying the following items: #{Player.inventory_list.join(', ')}."
+        message: "You are carrying the following items: #{current_game.inventory_list.join(', ')}."
       }
     when "look"
       if command["direct_object"]
