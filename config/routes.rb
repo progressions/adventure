@@ -1,6 +1,8 @@
 Adventure::Application.routes.draw do
   resources :saved_games
 
+  get "/" => 'saved_games#index'
+
   get "game/play" => 'game#play'
   get "game/look" => 'game#look'
   get "game/start/:id" => 'game#start', as: :game_start
