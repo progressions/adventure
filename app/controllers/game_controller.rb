@@ -1,4 +1,6 @@
 class GameController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+
   def current_room
     room_id = session[:current_room] ||= Room.first.try(:id)
     Room.find(room_id)
@@ -24,8 +26,20 @@ class GameController < ApplicationController
   def command
     output = {}
 
-    command = JSON.parse(params[:command])
-    command = replace_aliases(command)
+    Rails.logger.info(params.inspect)
+
+    unless params[:command]
+      render json: {
+        error: "No command"
+      } and return
+    end
+
+    if params[:command]
+      command = JSON.parse(params[:command])
+      command = replace_aliases(command)
+    else
+      command = ""
+    end
 
     verb = command["verb"]
 

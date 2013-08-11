@@ -1,25 +1,27 @@
 class window.Observer
   @init: ->
-    Observer.show()
+    NewObserver.show()
 
-    $(".source").focus()
-    $(".source").change ->
-      raw = $(".source").val()
-      $(".source").val("")
-      $(".source").focus()
+    $("#source").focus()
+    $("#source").change ->
+      raw = $("#source").val()
+      $("#source").val("")
+      $("#source").focus()
 
       parser = new Parser(raw)
-      Observer.submit(parser)
+      NewObserver.submit(parser)
 
   @show: ->
     $.ajax
       type: "GET"
       url: "/game/show"
       success: (data) ->
-        Observer.update(data)
+        NewObserver.update(data)
 
   @update: (data) ->
-    $(".latest").removeClass("latest")
+    console.log("Observer.update", data)
+
+    # $(".latest").removeClass("latest")
 
     output = $("<div>").addClass("latest")
 
@@ -42,13 +44,14 @@ class window.Observer
       output.append(room_exits)
       output.append(room_objects)
 
-    $(".output").prepend(output)
+    $("#output").prepend(output)
 
   @submit: (parser) ->
+    alert("old submit")
     $.ajax
       type: "POST"
       url: "/game/command"
       data:
         "command": parser.json()
       success: (data) ->
-        Observer.update(data)
+        NewObserver.update(data)
